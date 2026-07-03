@@ -9,6 +9,8 @@ InkCode combines the pressure-sensitive handwriting canvas of Krita with the pow
 ![TypeScript](https://img.shields.io/badge/typescript-5.8-blue)
 
 
+![Illustration](./illustration.gif)
+
 ## Features
 
 ### 🎨 Krita-Style Canvas (Right Panel)
@@ -161,10 +163,3 @@ npm run clean
 | `Ctrl+Shift+Z` / `Ctrl+Y` | Redo stroke |
 | `Ctrl+R` (Ink mode) | Recognize & insert handwriting |
 
-## License
-
-MIT — see LICENSE file for details.
-
-## Author
-
-GitHub: [@xuehai2233](https://github.com/xuehai2233)
