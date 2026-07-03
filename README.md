@@ -161,10 +161,3 @@ npm run clean
 | `Ctrl+Shift+Z` / `Ctrl+Y` | Redo stroke |
 | `Ctrl+R` (Ink mode) | Recognize & insert handwriting |
 
-## License
-
-MIT — see LICENSE file for details.
-
-## Author
-
-GitHub: [@xuehai2233](https://github.com/xuehai2233)
