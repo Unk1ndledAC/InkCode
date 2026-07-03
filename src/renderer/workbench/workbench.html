@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InkCode</title>
+</head>
+<body>
+
+  <!-- ============ TITLEBAR ============ -->
+  <div id="titlebar">
+    <span class="titlebar-brand">
+      <img src="../../assets/icon.svg" class="titlebar-icon" alt="" />
+      <span class="titlebar-text" data-i18n="appTitle">InkCode</span>
+    </span>
+    <span class="titlebar-subtitle" data-i18n="appSubtitle">Handwriting IDE</span>
+    <div class="titlebar-actions">
+      <button class="titlebar-btn" id="btn-minimize" title="Minimize">&#x2014;</button>
+      <button class="titlebar-btn" id="btn-maximize" title="Maximize">&#x25A1;</button>
+      <button class="titlebar-btn titlebar-btn-close" id="btn-close" title="Close">&#x2715;</button>
+    </div>
+  </div>
+
+  <!-- ============ MAIN SPLIT ============ -->
+  <div id="main-split">
+
+    <!-- LEFT: VS Code Area -->
+    <div id="vscode-panel" class="panel-left">
+
+      <!-- Activity Bar -->
+      <div id="activitybar">
+        <button class="activity-btn active" data-panel="files" title="" data-i18n-title="activityExplorer">
+          <span class="activity-icon">&#x1F4C1;</span>
+        </button>
+        <button class="activity-btn" data-panel="search" title="" data-i18n-title="activitySearch">
+          <span class="activity-icon">&#x1F50D;</span>
+        </button>
+        <button class="activity-btn" data-panel="settings" title="" data-i18n-title="activitySettings">
+          <span class="activity-icon">&#x2699;</span>
+        </button>
+        <div class="activity-spacer"></div>
+        <button class="activity-btn" data-panel="extensions" title="" data-i18n-title="activityExtensions">
+          <span class="activity-icon">&#x25A6;</span>
+        </button>
+      </div>
+
+      <!-- Sidebar -->
+      <div id="sidebar">
+        <!-- Files Panel -->
+        <div id="panel-files" class="sidebar-panel active">
+          <div class="sidebar-header" data-i18n="sidebarFiles">Files</div>
+          <div class="sidebar-actions">
+            <button class="sidebar-action-btn" id="btn-new-file" title="" data-i18n-title="actionNewFile">+</button>
+            <button class="sidebar-action-btn" id="btn-open-folder" title="" data-i18n-title="sidebarOpenFolder">&#x1F4C2;</button>
+          </div>
+          <div id="file-tree" class="sidebar-tree">
+            <div class="file-item file-active" data-file="learn.py" data-lang="python">🐍 learn.py</div>
+            <div class="file-item" data-file="app.js" data-lang="javascript">📄 app.js</div>
+            <div class="file-item" data-file="algorithm.cpp" data-lang="cpp">⚙ algorithm.cpp</div>
+            <div class="file-item" data-file="Main.java" data-lang="java">☕ Main.java</div>
+            <div class="file-item" data-file="index.html" data-lang="html">🌐 index.html</div>
+            <div class="file-item" data-file="notes.md" data-lang="markdown">📝 notes.md</div>
+          </div>
+        </div>
+
+        <!-- Search Panel -->
+        <div id="panel-search" class="sidebar-panel">
+          <div class="sidebar-header" data-i18n="sidebarSearch">Search</div>
+          <div class="search-box">
+            <input type="text" id="search-input" placeholder="" data-i18n-placeholder="sidebarSearch" />
+          </div>
+          <div id="search-results" class="sidebar-tree"></div>
+        </div>
+
+        <!-- Settings Panel -->
+        <div id="panel-settings" class="sidebar-panel">
+          <div class="sidebar-header" data-i18n="settingsTitle">Settings</div>
+          <div class="settings-group">
+            <label class="settings-label" data-i18n="settingsTheme">Color Theme</label>
+            <select id="setting-theme" class="settings-select">
+              <option value="dark" data-i18n="settingsThemeDark">Dark</option>
+              <option value="light" data-i18n="settingsThemeLight">Light</option>
+              <option value="custom" data-i18n="settingsThemeCustom">Midnight Blue</option>
+            </select>
+          </div>
+          <div class="settings-group">
+            <label class="settings-label" data-i18n="settingsLanguage">Language</label>
+            <select id="setting-language" class="settings-select">
+              <option value="zh" data-i18n="settingsLanguageChinese">中文</option>
+              <option value="en" data-i18n="settingsLanguageEnglish">English</option>
+            </select>
+          </div>
+          <div class="settings-group">
+            <label class="settings-label" data-i18n="editorFontSize">Font Size</label>
+            <input type="range" id="setting-font-size" class="settings-range" min="10" max="30" value="14" />
+            <span id="setting-font-size-value" class="settings-value">14</span>
+          </div>
+        </div>
+
+        <!-- Extensions Panel -->
+        <div id="panel-extensions" class="sidebar-panel">
+          <div class="sidebar-header" data-i18n="activityExtensions">Extensions</div>
+          <div class="sidebar-tree">
+            <div class="file-item">Python Extension v0.1.0</div>
+            <div class="file-item">Handwriting Extension v0.1.0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Editor Area -->
+      <div id="editor-area">
+        <!-- Breadcrumb -->
+        <div id="editor-breadcrumb">
+          <span class="breadcrumb-item" id="breadcrumb-lang">Python</span>
+          <span class="breadcrumb-sep">›</span>
+          <span class="breadcrumb-item" id="breadcrumb-file">learn.py</span>
+          <span class="breadcrumb-sep">›</span>
+          <span class="breadcrumb-item" id="breadcrumb-cursor">Ln 1, Col 1</span>
+          <div class="breadcrumb-actions">
+            <button class="breadcrumb-btn" id="btn-toggle-minimap" title="Toggle Minimap">&#x25A6;</button>
+            <button class="breadcrumb-btn" id="btn-toggle-wordwrap" title="Toggle Word Wrap">&#x21A9;</button>
+            <button class="breadcrumb-btn" id="btn-format-code" title="Format Document">&#x2630;</button>
+          </div>
+        </div>
+        <div id="editor-tabs">
+          <div class="editor-tab active" data-file="learn.py" data-lang="python">
+            <span class="tab-label">learn.py</span>
+            <span class="tab-close">&times;</span>
+          </div>
+        </div>
+        <div id="code-editor-container">
+          <div id="code-editor"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RESIZER -->
+    <div id="split-resizer">
+      <div class="resizer-handle"></div>
+    </div>
+
+    <!-- RIGHT: Krita Area -->
+    <div id="krita-panel" class="panel-right">
+
+      <!-- Krita Toolbox (vertical left) -->
+      <div id="krita-toolbox">
+        <button class="krita-tool-btn active" data-tool="brush" title="" data-i18n-title="toolBrush">
+          <span class="tool-icon">&#x270E;</span>
+        </button>
+        <button class="krita-tool-btn" data-tool="eraser" title="" data-i18n-title="toolEraser">
+          <span class="tool-icon">&#x25CB;</span>
+        </button>
+        <button class="krita-tool-btn" data-tool="arrow" title="" data-i18n-title="toolArrow">
+          <span class="tool-icon">&#x2197;</span>
+        </button>
+        <button class="krita-tool-btn" data-tool="highlight" title="" data-i18n-title="toolHighlight">
+          <span class="tool-icon">&#x25A0;</span>
+        </button>
+        <button class="krita-tool-btn" data-tool="textbox" title="" data-i18n-title="toolTextBox">
+          <span class="tool-icon">T</span>
+        </button>
+        <div class="tool-separator"></div>
+        <button class="krita-tool-btn" data-tool="colorpicker" title="" data-i18n-title="toolColorPicker">
+          <span class="tool-icon">&#x1F3A8;</span>
+        </button>
+      </div>
+
+      <!-- Canvas Area -->
+      <div id="krita-canvas-area">
+        <div id="krita-canvas-header">
+          <div class="mode-tabs">
+            <button class="mode-tab active" data-mode="code" data-i18n="modeCode">Code</button>
+            <button class="mode-tab" data-mode="ink" data-i18n="modeWrite">Write</button>
+            <button class="mode-tab" data-mode="annotate" data-i18n="modeAnnotate">Annotate</button>
+          </div>
+          <div class="canvas-actions">
+            <button class="canvas-action-btn" id="btn-recognize" title="" data-i18n-title="bridgeRecognize">&#x1F4DD;</button>
+            <button class="canvas-action-btn" id="btn-export-open" title="" data-i18n-title="exportTitle">&#x1F4E4;</button>
+            <button class="canvas-action-btn" id="btn-undo" title="" data-i18n-title="actionUndo">&#x21A9;</button>
+            <button class="canvas-action-btn" id="btn-redo" title="" data-i18n-title="actionRedo">&#x21AA;</button>
+          </div>
+        </div>
+        <div id="krita-canvas-wrapper">
+          <!-- Canvas is created dynamically by InkCanvas -->
+          <!-- Code line numbers overlay for alignment -->
+          <div id="line-numbers-overlay"></div>
+        </div>
+      </div>
+
+      <!-- Krita Right Panel (Color + Layers + Settings) -->
+      <div id="krita-sidebar">
+
+        <!-- Color Picker -->
+        <div class="krita-panel-section">
+          <div class="krita-panel-header" data-i18n="colorPickerLabel">Color</div>
+          <div class="color-current">
+            <div class="color-swatch-current" id="color-swatch-display" style="background: #e94560;"></div>
+            <input type="color" id="brush-color-picker" class="color-input-native" value="#e94560" />
+          </div>
+          <div class="color-grid" id="color-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Brush Settings -->
+        <div class="krita-panel-section">
+          <div class="krita-panel-header" data-i18n="brushSize">Size</div>
+          <input type="range" id="brush-size" class="settings-range" min="1" max="30" value="4" />
+          <span id="brush-size-value" class="settings-value">4</span>
+        </div>
+        <div class="krita-panel-section">
+          <div class="krita-panel-header" data-i18n="brushOpacity">Opacity</div>
+          <input type="range" id="brush-opacity" class="settings-range" min="10" max="100" value="100" />
+          <span id="brush-opacity-value" class="settings-value">100%</span>
+        </div>
+        <div class="krita-panel-section checkbox-row">
+          <input type="checkbox" id="brush-pressure" checked />
+          <label for="brush-pressure" data-i18n="brushPressure">Pressure Sensitive</label>
+        </div>
+        <div class="krita-panel-section">
+          <div class="krita-panel-header" data-i18n="brushSmoothing">Smoothing</div>
+          <select id="brush-smoothing" class="settings-select">
+            <option value="none" data-i18n="brushSmoothingNone">None</option>
+            <option value="light" data-i18n="brushSmoothingLight">Light</option>
+            <option value="heavy" data-i18n="brushSmoothingHeavy">Heavy</option>
+          </select>
+        </div>
+
+        <!-- Layers -->
+        <div class="krita-panel-section">
+          <div class="krita-panel-header" data-i18n="canvasLayers">Layers</div>
+          <div class="layer-list" id="layer-list">
+            <div class="layer-item" data-layer="0">
+              <label>
+                <input type="checkbox" checked class="layer-visibility" data-layer="0" />
+                <span data-i18n="canvasLayerInk">Ink</span>
+              </label>
+              <button class="layer-clear-btn" data-layer="0" title="" data-i18n-title="canvasClearLayer">&times;</button>
+            </div>
+            <div class="layer-item" data-layer="1">
+              <label>
+                <input type="checkbox" checked class="layer-visibility" data-layer="1" />
+                <span data-i18n="canvasLayerAnnotation">Annotations</span>
+              </label>
+              <button class="layer-clear-btn" data-layer="1" title="" data-i18n-title="canvasClearLayer">&times;</button>
+            </div>
+            <div class="layer-item" data-layer="2">
+              <label>
+                <input type="checkbox" checked class="layer-visibility" data-layer="2" />
+                <span data-i18n="canvasLayerHighlight">Highlights</span>
+              </label>
+              <button class="layer-clear-btn" data-layer="2" title="" data-i18n-title="canvasClearLayer">&times;</button>
+            </div>
+          </div>
+          <button class="layer-clear-all-btn" id="btn-clear-all" data-i18n="canvasClearAll">Clear All</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ============ STATUS BAR ============ -->
+  <div id="statusbar">
+    <div class="status-left">
+      <span class="status-item" id="status-mode">
+        <span data-i18n="statusMode">Mode</span>: <span id="status-mode-value">Code</span>
+      </span>
+      <span class="status-item" id="status-position">
+        <span data-i18n="statusPosition">Pos</span>: <span id="status-pos-value">0, 0</span>
+      </span>
+    </div>
+    <div class="status-middle">
+      <span class="status-item">
+        <span data-i18n="statusLines">Lines</span>: <span id="status-lines-value">0</span>
+      </span>
+      <span class="status-item">
+        <span data-i18n="statusStrokes">Strokes</span>: <span id="status-strokes-value">0</span>
+      </span>
+    </div>
+    <div class="status-right">
+      <span class="status-item" id="status-pressure">
+        <span data-i18n="statusPressure">Pressure</span>: <span id="status-pressure-value">0</span>
+      </span>
+      <span class="status-item status-mode-badge" id="status-badge">InkCode v0.1.0</span>
+    </div>
+  </div>
+
+  <!-- ============ EXPORT DIALOG ============ -->
+  <div id="export-dialog" class="dialog-overlay" style="display: none;">
+    <div class="dialog">
+      <div class="dialog-header">
+        <span data-i18n="exportTitle">Export</span>
+        <button class="dialog-close" id="btn-export-close">&times;</button>
+      </div>
+      <div class="dialog-body">
+        <div class="dialog-row">
+          <label data-i18n="exportFormat">Format</label>
+          <select id="export-format">
+            <option value="png" data-i18n="exportPng">PNG Image</option>
+            <option value="svg" data-i18n="exportSvg">SVG Vector</option>
+            <option value="source" data-i18n="exportSource">Source Code</option>
+          </select>
+        </div>
+        <div class="dialog-row">
+          <label data-i18n="exportLanguage">Language</label>
+          <select id="export-language">
+            <option value="python">Python</option>
+            <option value="javascript">JavaScript</option>
+            <option value="cpp">C++</option>
+          </select>
+        </div>
+        <div class="dialog-row checkbox-row">
+          <input type="checkbox" id="export-include-annotations" checked />
+          <label for="export-include-annotations" data-i18n="exportIncludeAnnotations">Include Annotations</label>
+        </div>
+        <div class="dialog-row checkbox-row">
+          <input type="checkbox" id="export-include-highlights" checked />
+          <label for="export-include-highlights" data-i18n="exportIncludeHighlights">Include Highlights</label>
+        </div>
+        <div id="export-result" class="dialog-result" style="display: none;"></div>
+      </div>
+      <div class="dialog-footer">
+        <button class="btn btn-secondary" id="btn-export-cancel" data-i18n="exportCancel">Cancel</button>
+        <button class="btn btn-primary" id="btn-export-convert" data-i18n="exportConvert">Convert &amp; Insert</button>
+        <button class="btn btn-primary" id="btn-export-save" data-i18n="exportSave">Export</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ OCR STATUS TOAST ============ -->
+  <div id="ocr-toast" class="toast" style="display: none;">
+    <span id="ocr-toast-text"></span>
+  </div>
+
+  <!-- ============ COMMAND PALETTE ============ -->
+  <div id="command-palette" class="dialog-overlay" style="display: none;">
+    <div class="dialog palette-dialog">
+      <div class="palette-input-wrap">
+        <span class="palette-icon">›</span>
+        <input type="text" id="palette-input" placeholder="Type a command..." />
+      </div>
+      <div id="palette-results" class="palette-results"></div>
+    </div>
+  </div>
+
+  <!-- ============ NEW FILE DIALOG ============ -->
+  <div id="newfile-dialog" class="dialog-overlay" style="display: none;">
+    <div class="dialog">
+      <div class="dialog-header">
+        <span data-i18n="actionNewFile">New File</span>
+        <button class="dialog-close" id="btn-newfile-close">&times;</button>
+      </div>
+      <div class="dialog-body">
+        <div class="dialog-row">
+          <label>File Name</label>
+          <input type="text" id="newfile-name" value="untitled.py" />
+        </div>
+        <div class="dialog-row">
+          <label>Language</label>
+          <select id="newfile-language">
+            <option value="python">Python</option>
+            <option value="javascript">JavaScript</option>
+            <option value="typescript">TypeScript</option>
+            <option value="cpp">C++</option>
+            <option value="java">Java</option>
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+            <option value="json">JSON</option>
+            <option value="markdown">Markdown</option>
+          </select>
+        </div>
+      </div>
+      <div class="dialog-footer">
+        <button class="btn btn-secondary" id="btn-newfile-cancel" data-i18n="exportCancel">Cancel</button>
+        <button class="btn btn-primary" id="btn-newfile-create">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CONTEXT MENU ============ -->
+  <div id="context-menu" class="context-menu" style="display: none;">
+    <div class="context-menu-item" data-action="new">📄 New File</div>
+    <div class="context-menu-item" data-action="rename">✏ Rename</div>
+    <div class="context-menu-item" data-action="delete">🗑 Delete</div>
+    <div class="context-separator"></div>
+    <div class="context-menu-item" data-action="copy">📋 Copy Path</div>
+  </div>
+
+</body>
+</html>

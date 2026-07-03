@@ -1,0 +1,73 @@
+{
+  "name": "inkcode",
+  "version": "0.1.0",
+  "description": "Handwriting-enabled IDE combining Krita-style canvas input with VS Code-style code editing",
+  "main": "dist/main/main.js",
+  "scripts": {
+    "build": "tsc && webpack --config webpack.renderer.config.js",
+    "start": "env -u ELECTRON_RUN_AS_NODE electron .",
+    "dev": "concurrently \"tsc -w\" \"webpack -w --config webpack.renderer.config.js\" \"wait-on dist/main/main.js && env -u ELECTRON_RUN_AS_NODE electron .\"",
+    "clean": "rimraf dist",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "author": "xuehai2233",
+  "license": "MIT",
+  "build": {
+    "appId": "com.inkcode.ide",
+    "productName": "InkCode",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        },
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "InkCode-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico"
+    },
+    "extraResources": [
+      {
+        "from": "assets",
+        "to": "assets"
+      }
+    ]
+  },
+  "dependencies": {
+    "monaco-editor": "^0.52.2",
+    "tesseract.js": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "concurrently": "^9.1.2",
+    "css-loader": "^7.1.2",
+    "electron": "42.3.0",
+    "electron-builder": "^26.15.3",
+    "html-webpack-plugin": "^5.6.3",
+    "rimraf": "^6.0.1",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "wait-on": "^8.0.3",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1"
+  }
+}
